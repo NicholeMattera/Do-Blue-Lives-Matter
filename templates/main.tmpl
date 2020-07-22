@@ -2,18 +2,18 @@
 <html lang="en">
     <head>
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <meta name="description" content="No" />
+        <meta name="description" content="{{ .Description }}" />
 
-        <meta property="og:title" content="Do Blue Lives Matter?" />
-        <meta property="og:site_name" content="Do Blue Lives Matter?" />
-        <meta property="og:url" content="https://doblue.live/smatter" />
-        <meta property="og:description" content="No" />
+        <meta property="og:title" content="{{ .Title }}" />
+        <meta property="og:site_name" content="{{ .Title }}" />
+        <meta property="og:url" content="{{ .URL }}" />
+        <meta property="og:description" content="{{ .Description }}" />
 
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="Do Blue Lives Matter?" />
-        <meta name="twitter:description" content="No" />
+        <meta name="twitter:title" content="{{ .Title }}?" />
+        <meta name="twitter:description" content="{{ .Description }}" />
         
-        <title>Do Blue Lives Matter?</title>
+        <title>{{ .Title }}</title>
 
         <style>
             body {
@@ -46,7 +46,7 @@
     </head>
     <body>
         <div>
-            <h1>No</h1>
+            <h1>{{ .Description }}</h1>
             <p>Blue lives do not exist. Police officers willingly chose their profession. When they finish their shift, they clock out, go home and take their badge off. It's a job, not a race. People of color cannot go home and stop being their race; they did not willingly choose to be their race in this world. Blue lives matter is a mockery of an actual, valuable movement.</p>
         </div>
     </body>
