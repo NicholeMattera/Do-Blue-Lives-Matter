@@ -45,12 +45,17 @@ func main() {
             }
         }
 
+        scheme := "http"
+        if req.TLS != nil {
+            scheme += "s"
+        }
+
         // Templates & Redirect
         if req.URL.Path == "/smatter" || req.URL.Path == "/smatter/offline.html" {
             data := TemplateData {
                 Title:                  "Do Blue Lives Matter?",
                 Description:            "No",
-                URL:                    "https://doblue.live/smatter",
+                URL:                    scheme + "://" + req.Host + "/smatter",
                 IncludeServiceWorker:   req.URL.Path == "/smatter",
             }
 
@@ -59,17 +64,12 @@ func main() {
             data := TemplateData {
                 Title:                  "Do Blue Lives Really Matter?",
                 Description:            "Still No",
-                URL:                    "https://doblue.live/sreallymatter",
+                URL:                    scheme + "://" + req.Host + "/sreallymatter",
                 IncludeServiceWorker:   req.URL.Path == "/sreallymatter",
             }
 
             mainTemplate.Execute(w, data)
         } else {
-            scheme := "http"
-            if req.TLS != nil {
-                scheme += "s"
-            }
-
             http.Redirect(w, req, scheme + "://" + req.Host + "/smatter", http.StatusPermanentRedirect)
         }
     })
