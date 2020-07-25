@@ -3,6 +3,9 @@ package main
 import (
     "log"
     "net/http"
+    "os"
+    "path/filepath"
+    "strings"
     "text/template"
 )
 
@@ -13,13 +16,36 @@ type TemplateData struct {
     IncludeServiceWorker    bool
 }
 
+func fileExists(path string) bool {
+    info, err := os.Stat(path)
+    if os.IsNotExist(err) {
+        return false
+    }
+    return !info.IsDir()
+}
+
 func main() {
+    cwd, err := os.Getwd()
+    if err != nil {
+        log.Fatal("Error: Unable to get current working directory.")
+    }
+
     mainTemplate, err := template.ParseFiles("./templates/main.tmpl")
     if err != nil {
         log.Fatal("Error: Unable to parse the template file.")
     }
 
     http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+        // Serve static files.
+        if fileExists("./static" + req.URL.Path) {
+            path, err := filepath.Abs("./static" + req.URL.Path)
+            if err == nil && strings.HasPrefix(path, cwd + "/static") {
+                http.ServeFile(w, req, "./static" + req.URL.Path)
+                return
+            }
+        }
+
+        // Templates & Redirect
         if req.URL.Path == "/smatter" || req.URL.Path == "/smatter/offline.html" {
             data := TemplateData {
                 Title:                  "Do Blue Lives Matter?",
@@ -38,8 +64,6 @@ func main() {
             }
 
             mainTemplate.Execute(w, data)
-        } else if req.URL.Path == "/robots.txt" || req.URL.Path == "/service-worker.js" || req.URL.Path == "/manifest.json" {
-            http.ServeFile(w, req, "./static" + req.URL.Path)
         } else {
             scheme := "http"
             if req.TLS != nil {
