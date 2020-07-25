@@ -38,10 +38,8 @@ func main() {
             }
 
             mainTemplate.Execute(w, data)
-        } else if req.URL.Path == "/robots.txt" {
-            http.ServeFile(w, req, "./static/robots.txt")
-        } else if req.URL.Path == "/service-worker.js" {
-            http.ServeFile(w, req, "./static/service-worker.js")
+        } else if req.URL.Path == "/robots.txt" || req.URL.Path == "/service-worker.js" || req.URL.Path == "/manifest.json" {
+            http.ServeFile(w, req, "./static" + req.URL.Path)
         } else {
             scheme := "http"
             if req.TLS != nil {

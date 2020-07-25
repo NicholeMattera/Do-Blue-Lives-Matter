@@ -15,6 +15,8 @@
         
         <title>{{ .Title }}</title>
 
+        <link rel="manifest" href="/manifest.json">
+
         <style>
             body {
                 align-items: center;
@@ -51,7 +53,7 @@
         </div>
         {{ if .IncludeServiceWorker }}
 
-        <script>
+        <script type="text/javascript">
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('/service-worker.js');
             }

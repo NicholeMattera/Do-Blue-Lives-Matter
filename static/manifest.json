@@ -1,0 +1,12 @@
+{
+    "name": "Do Blue Lives Matter?",
+    "short_name": "Do Blue Lives Matter",
+    "description": "No",
+    "theme_color": "#FDD835",
+    "background_color": "#212121",
+    "display": "minimal-ui",
+    "Scope": "/",
+    "start_url": "/smatter",
+    "icons": [],
+    "splash_pages": null
+}
