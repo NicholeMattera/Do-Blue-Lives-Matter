@@ -45,9 +45,9 @@ func main() {
             }
         }
 
-        scheme := "http"
-        if req.TLS != nil {
-            scheme += "s"
+        // Redirect all HTTP traffic to HTTPS.
+        if req.Header.Get("X-Forwarded-Proto") == "http" || req.Host != "doblue.live" {
+            http.Redirect(w, req, "https://doblue.live/smatter", http.StatusPermanentRedirect)
         }
 
         // Templates & Redirect
@@ -55,7 +55,7 @@ func main() {
             data := TemplateData {
                 Title:                  "Do Blue Lives Matter?",
                 Description:            "No",
-                URL:                    scheme + "://" + req.Host + "/smatter",
+                URL:                    "https://doblue.live/smatter",
                 IncludeServiceWorker:   req.URL.Path == "/smatter",
             }
 
@@ -64,13 +64,13 @@ func main() {
             data := TemplateData {
                 Title:                  "Do Blue Lives Really Matter?",
                 Description:            "Still No",
-                URL:                    scheme + "://" + req.Host + "/sreallymatter",
+                URL:                    "https://doblue.live/sreallymatter",
                 IncludeServiceWorker:   req.URL.Path == "/sreallymatter",
             }
 
             mainTemplate.Execute(w, data)
         } else {
-            http.Redirect(w, req, scheme + "://" + req.Host + "/smatter", http.StatusPermanentRedirect)
+            http.Redirect(w, req, "https://doblue.live/smatter", http.StatusPermanentRedirect)
         }
     })
 
